@@ -1,5 +1,18 @@
-const totalMemorySize=600;
+// I stopped at trying to render segments of each process
+// get process start, 
+// get process size
+// loop over it's segments
+// divide the render of the process into segments
+// use the same apprach  for the allocate function
+const totalMemorySize=520;
 const holes = [[40,80],[140,100],[260,40],[320,20],[400,100]]
+const processes =[
+    [null,{code:10,data:30,stack:16},"p1"],
+    [null,{code:12,data:40,stack:18},"p2"],
+    [null,{code:10,data:30,stack:35},"p3"],
+    [null,{code:14,data:6,stack:12},"p4"],
+
+] //start,size,name
 const OldProcess=[]
 const memory = document.querySelector(".memory")
 const scale = 2
@@ -57,24 +70,22 @@ function renderHoles(type,holes){
     }
 }
 
-const processes =[
-    [null,30,"p1"],
-    [null,60,"p2"],
-    [null,10,"p3"],
-    [null,90,"p4"],
-    [null,32,"p5"],
-]
-
 function firstFit(){
     for(let p = 0  ; p<processes.length ; p++){
-        const process = processes[p]
-        // const {name,size} = process
-        allocate(processes[p])
+        
+        // DON'T TOUCH MY SHIT 😡😡😡 
+        const totalProcessSize = Object.values(processes[p][1]).reduce((prev,acc)=>prev+acc)
+        allocate(processes[p],totalProcessSize)
+       let seg = Object.values(processes[p][1])
+       seg.forEach(s=>alert(s))
+    //    for (let s= 0; s < seg.length ; s++){
+        //    alert(seg[s])
+    //    }
     }
 }
 
-function allocate(p){
-    const size = p[1]
+function allocate(p,totalProcessSize){
+    const size =totalProcessSize
     for(let h =0 ; h<holes.length; h++){
         const holeStart = holes[h][0]
         const holeSize = holes[h][1]
@@ -87,6 +98,7 @@ function allocate(p){
             //update the hole
         }
     }
+
 }
 firstFit()
 renderHoles("old",OldProcess)

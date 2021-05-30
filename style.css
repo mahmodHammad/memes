@@ -1,0 +1,63 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    height: 100vh;
+    margin: 0;
+}
+h1{
+    color: blueviolet;
+}
+.memory{
+    background-color: #eee;
+    /* padding: 20px; */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    align-self:flex-end;
+    text-align: center;
+    height: 1150px;
+    top: 5%;
+    position: absolute;
+}
+.hole{
+    background-color: #aca;
+    margin-top: 1px;
+    /* height: 100px; */
+    display: flex;
+    /* align-self: center; */
+    width: 100%;
+    /* align-items: center; */
+    /* justify-content: center; */
+    position: relative;
+}
+
+.holeEndIndex{
+    color: deeppink;
+    position: absolute;
+    top: calc(100% - 10px);
+    left: -30px;
+}
+
+.h0{
+    top: 600px;
+    background-color: chartreuse;
+
+}
+
+.h1{
+top: 20px;
+background-color: darkgoldenrod;
+}
+.h1::after{
+    content: "1000";
+}
+.h1::before{
+    content: "1000";
+}
+
+
+.h2{
+background-color: darksalmon;
+}

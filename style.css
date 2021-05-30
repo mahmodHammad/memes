@@ -22,7 +22,9 @@ h1{
     position: absolute;
 }
 .hole{
-    background-color: #aca;
+    background-color: #ada;
+    border: 0.7px solid #0f0;
+
     margin-top: 1px;
     /* height: 100px; */
     display: flex;
@@ -30,14 +32,30 @@ h1{
     width: 100%;
     /* align-items: center; */
     /* justify-content: center; */
-    position: relative;
+    position: absolute;
+}
+.oldProcess{
+    background-color: #daa;
+    border: 0.7px solid #f00;
+    display: flex;
+    width: 100%;
+    position: absolute;
+}
+.process{
+    background-color: #aad;
+    border: 0.7px solid #00f;
+    display: flex;
+    width: 100%;
+    position: absolute;
+
 }
 
 .holeEndIndex{
-    color: deeppink;
+    color: #ccc;
+    font-size: 12px;
     position: absolute;
     top: calc(100% - 10px);
-    left: -30px;
+    left: -26px;
 }
 
 .h0{

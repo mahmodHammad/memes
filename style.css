@@ -18,7 +18,7 @@ h1{
     align-self:flex-end;
     text-align: center;
     height: 1150px;
-    top: 5%;
+    /* top: 5%; */
     position: absolute;
 }
 .hole{

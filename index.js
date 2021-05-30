@@ -1,8 +1,9 @@
-const totalMemorySize=1000;
-const holes = [[40,80],[120,100],[260,40],[300,20],[600,100]]
+const totalMemorySize=600;
+const holes = [[40,80],[140,100],[260,40],[320,20],[400,100]]
 const OldProcess=[]
 const memory = document.querySelector(".memory")
-memory.style.height= `${totalMemorySize}px`
+const scale = 2
+memory.style.height= `${totalMemorySize * scale}px`
 
 function generateOldProcess(){
     const firstHoleStart = holes[0][0]
@@ -41,8 +42,8 @@ function renderHoles(type,holes){
         }
 
         
-        holeBox.style.top = `${holes[hole][0]}px`
-        holeBox.style.height = `${holes[hole][1]}px`
+        holeBox.style.top = `${holes[hole][0] *scale}px`
+        holeBox.style.height = `${holes[hole][1] *scale}px`
         const endSize =  document.createElement("span")
         endSize.innerText =holes[hole][0] + holes[hole][1] 
         endSize.classList.add("holeEndIndex")
@@ -60,7 +61,8 @@ const processes =[
     [null,30,"p1"],
     [null,60,"p2"],
     [null,10,"p3"],
-    [null,90,"p4"]
+    [null,90,"p4"],
+    [null,32,"p5"],
 ]
 
 function firstFit(){
@@ -81,14 +83,15 @@ function allocate(p){
             const processEnd = holeStart+size
             holes[h][0] = processEnd
             holes[h][1]= holes[h][1] - size
+            return
             //update the hole
         }
     }
 }
 firstFit()
 renderHoles("old",OldProcess)
-renderHoles("hole",holes)
 renderHoles("process",processes)
+renderHoles("hole",holes)
 
 console.log("MEM",memory)
 

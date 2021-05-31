@@ -10,7 +10,7 @@ const processes =[
     [null,{code:10,data:30,stack:16},"p1"],
     [null,{code:12,data:40,stack:18},"p2"],
     [null,{code:10,data:30,stack:35},"p3"],
-    [null,{code:14,data:6,stack:12},"p4"],
+    [null,{code:11,data:10,stack:12},"p4"],
 
 ] //start,size,name
 const OldProcess=[]
@@ -40,7 +40,11 @@ function generateOldProcess(){
 generateOldProcess()
 // alert(holes[0][0])
 function renderHoles(type,holes){
+    // holes ==> 
     for(let hole = 0; hole <holes.length ; hole+=1){
+        const startingIndex = holes[hole][0]
+        const size = holes[hole][1]
+
         // alert(hole)
         const holeBox = document.createElement("div")
         if(type ==="old"){
@@ -50,17 +54,17 @@ function renderHoles(type,holes){
             holeBox.innerText="This is Hole #"+hole
             holeBox.classList.add("hole")
         }else if(type ==="process"){
-            holeBox.innerText="This is Process #"+holes[hole][2]
+            holeBox.innerText= holes[hole][2]
             holeBox.classList.add("process")
         }
-
         
-        holeBox.style.top = `${holes[hole][0] *scale}px`
-        holeBox.style.height = `${holes[hole][1] *scale}px`
+        holeBox.style.top = `${startingIndex *scale}px`
+        holeBox.style.height = `${size *scale}px`
         const endSize =  document.createElement("span")
-        endSize.innerText =holes[hole][0] + holes[hole][1] 
+        endSize.innerText =startingIndex + size 
+
         endSize.classList.add("holeEndIndex")
-        if(holes[hole][0]!==null){
+        if(startingIndex!==null){
             holeBox.appendChild(endSize)
             memory.appendChild(holeBox)
         }else{
@@ -70,21 +74,23 @@ function renderHoles(type,holes){
     }
 }
 
-function firstFit(){
+const totalProcessSize = (process)=> Object.values(process).reduce((prev,acc)=>prev+acc)
+         
+
+function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
         
         // DON'T TOUCH MY SHIT 😡😡😡 
-        const totalProcessSize = Object.values(processes[p][1]).reduce((prev,acc)=>prev+acc)
-        allocate(processes[p],totalProcessSize)
+        firstFit(processes[p],totalProcessSize(processes[p][1]))
        let seg = Object.values(processes[p][1])
-       seg.forEach(s=>alert(s))
+    //    seg.forEach(s=>alert(s))
     //    for (let s= 0; s < seg.length ; s++){
         //    alert(seg[s])
     //    }
     }
 }
 
-function allocate(p,totalProcessSize){
+function firstFit(p,totalProcessSize){
     const size =totalProcessSize
     for(let h =0 ; h<holes.length; h++){
         const holeStart = holes[h][0]
@@ -100,9 +106,25 @@ function allocate(p,totalProcessSize){
     }
 
 }
-firstFit()
+
+function renderProcess(){
+    processes.forEach(p=>{
+        const segments = p[1]
+        // alert(p[0])
+        let accumalatedStartingIndex = p[0]
+        Object.keys(p[1]).forEach(s=>{
+            renderHoles("process",[[accumalatedStartingIndex,p[1][s],`${p[2]}:${s}`]])
+            accumalatedStartingIndex+=p[1][s]
+        })
+
+        // alert(totalProcessSize(segments))
+        // alert(p[0])
+    })
+}
+allocate()
+renderProcess()
 renderHoles("old",OldProcess)
-renderHoles("process",processes)
+// renderHoles("process",processes)
 renderHoles("hole",holes)
 
 console.log("MEM",memory)

@@ -5,13 +5,13 @@
 // divide the render of the process into segments
 // use the same apprach  for the allocate function
 
-const totalMemorySize=520;
-let holes = [[40,80],[140,100],[260,40],[320,20],[400,50],[450,50]]
+const totalMemorySize=540;
+let holes = [[40,80],[140,100],[260,40],[320,20],[400,80],[450,60],[510,20]]
 const processes =[
     [null,{code:15,data:30,stack:35},"p3"],
     [null,{code:10,data:30,stack:16},"p1"],
-    [null,{code:12,data:40,stack:18},"p2"],
-    [null,{code:11,data:10,stack:12},"p4"],
+    [null,{code:10,data:40,stack:18},"p2"],
+    [null,{code:12,data:10,stack:12},"p4"],
 
 ] //start,size,name
 const OldProcess=[]
@@ -31,12 +31,15 @@ function generateOldProcess(){
       const HoleEnd = holeStart+HoleSize
 
       if(h === holes.length-1){
-        OldProcess.push([HoleEnd,totalMemorySize - HoleEnd])
+          const lastHole = totalMemorySize - HoleEnd
+          if(HoleEnd<totalMemorySize)
+            OldProcess.push([HoleEnd,lastHole])
       }else{
           const nextStart = holes[h+1][0]
           OldProcess.push([HoleEnd,nextStart - HoleEnd])
       }
     }
+    console.log("OldProcess",OldProcess)
 } 
 // alert(holes[0][0])
 function renderHoles(type,holes){
@@ -104,9 +107,6 @@ function firstFit(p,totalProcessSize){
 
 function renderProcess(){
     processes.forEach(p=>{
-        const segments = p[1]
-        // alert(p[0])
-
         let accumalatedStartingIndex = p[0]
         if(accumalatedStartingIndex!==null){
 
@@ -117,9 +117,6 @@ function renderProcess(){
         }else{
             // PROCESS CAN NOT BE ALLOCATED (NO ENGOUGH SPACE!)
         }
-
-        // alert(totalProcessSize(segments))
-        // alert(p[0])
     })
 }
 
@@ -127,33 +124,24 @@ function concateHoles(){
     holes.forEach((h,index)=>{
         const [start,size]=h
         if(index<holes.length-1){
-            // alert(index)
             const end = start+size
-            const nextStart = holes[index+1][0]
-            const nextSize = holes[index+1][1]
+            const [nextStart,nextSize] = holes[index+1]
             if(end>=nextStart ){
-                console.log("HEY",index)
-                holes[index][1]+= nextSize
-
-                // holes =[ ...holes.slice(0,index) ,  ...holes.slice(index+1)]
-                console.log("holes",holes)
-                // alert(f[0][0])
-               
-                // alert (nextStart)
+                holes[index][1] =  nextStart + nextSize - start
+                holes =[ ...holes.slice(0,index+1) ,  ...holes.slice(index+2)]
+                concateHoles()
             }
-        }else{
-            // alert(index)
         }
     })
 }
+
 concateHoles() 
 generateOldProcess()
 allocate()
 
 renderProcess()
-
-renderHoles("old",OldProcess)
 renderHoles("hole",holes)
+renderHoles("old",OldProcess)
 
 
 

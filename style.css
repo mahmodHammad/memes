@@ -4,6 +4,8 @@ body{
     justify-content: right;
     height: 100vh;
     margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+
 }
 h1{
     color: blueviolet;
@@ -20,6 +22,7 @@ h1{
     height: 1150px;
     /* top: 5%; */
     position: absolute;
+
 }
 .hole{
     background-color: darkolivegreen;
@@ -31,6 +34,8 @@ h1{
     display: flex;
     /* align-self: center; */
     width: 100%;
+    font-size: 12px;
+
     /* align-items: center; */
     /* justify-content: center; */
     position: absolute;
@@ -40,17 +45,20 @@ h1{
     color: whitesmoke;
     /* border: 0.7px solid darkred; */
     display: flex;
+    font-size: 12px;
+
     width: 100%;
     position: absolute;
 }
 .process{
     background-color: darkblue;
+    font-size: 12px;
     color: whitesmoke;
-    border-bottom: 0.7px solid #00f;
-    margin: 1px;
+    border: 0.7px solid #00f;
     display: flex;
     width: 100%;
     position: absolute;
+
 
 }
 

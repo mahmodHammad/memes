@@ -4,8 +4,9 @@
 // loop over it's segments
 // divide the render of the process into segments
 // use the same apprach  for the allocate function
+
 const totalMemorySize=520;
-const holes = [[40,80],[140,100],[260,40],[320,20],[400,100]]
+let holes = [[40,80],[140,100],[260,40],[320,20],[400,50],[450,70]]
 const processes =[
     [null,{code:10,data:30,stack:16},"p1"],
     [null,{code:12,data:40,stack:18},"p2"],
@@ -37,7 +38,6 @@ function generateOldProcess(){
       }
     }
 } 
-generateOldProcess()
 // alert(holes[0][0])
 function renderHoles(type,holes){
     // holes ==> 
@@ -79,14 +79,9 @@ const totalProcessSize = (process)=> Object.values(process).reduce((prev,acc)=>p
 
 function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
-        
         // DON'T TOUCH MY SHIT 😡😡😡 
         firstFit(processes[p],totalProcessSize(processes[p][1]))
-       let seg = Object.values(processes[p][1])
-    //    seg.forEach(s=>alert(s))
-    //    for (let s= 0; s < seg.length ; s++){
-        //    alert(seg[s])
-    //    }
+
     }
 }
 
@@ -121,13 +116,38 @@ function renderProcess(){
         // alert(p[0])
     })
 }
+
+function concateHoles(){
+    holes.forEach((h,index)=>{
+        const [start,size]=h
+        if(index<holes.length-1){
+            // alert(index)
+            const end = start+size
+            const nextStart = holes[index+1][0]
+            const nextSize = holes[index+1][0]
+            if(end>=nextStart ){
+                // holes[index][1]+= nextSize
+
+                holes =[ ...holes.slice(0,index) ,  ...holes.slice(index+1)]
+                console.log("holes",holes)
+                // alert(f[0][0])
+               
+                // alert (nextStart)
+            }
+        }else{
+            // alert(index)
+        }
+    })
+}
+concateHoles()
+generateOldProcess()
 allocate()
 renderProcess()
 renderHoles("old",OldProcess)
 // renderHoles("process",processes)
 renderHoles("hole",holes)
 
-console.log("MEM",memory)
+
 
 /*
 Inputs:

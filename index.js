@@ -6,10 +6,15 @@
 // use the same apprach  for the allocate function
 
 const totalMemorySize=540;
-let holes = [[40,80],[140,100],[260,40],[320,20],[400,80],[450,60],[510,20]]
-const processes =[
-    [null,{code:15,data:30,stack:35},"p3"],
+let holes = [[140,100],[40,80],[260,40],[320,20],[400,80],[450,60],[510,20]]
+
+function orderHoles(){
+   holes = holes.sort((a,b)=>a[0]-b[0])
+}
+
+let processes =[
     [null,{code:10,data:30,stack:16},"p1"],
+    [null,{code:15,data:30,stack:35},"p3"],
     [null,{code:10,data:40,stack:18},"p2"],
     [null,{code:12,data:10,stack:12},"p4"],
 
@@ -135,14 +140,36 @@ function concateHoles(){
     })
 }
 
+function deleteProcess(processName){
+    // create a hole
+    const processIndex = processes.findIndex(p=>p[2]===processName)
+    const AfterDelete = [...processes.slice(0,processIndex),...processes.slice(processIndex+1)]
+    const [start,segments,name] =processes[processIndex]
+    const ProcessSize = totalProcessSize(segments)
+    holes.push([start,ProcessSize])
+    orderHoles()
+    concateHoles()
+    console.log("HOLES",holes)
+    // concateHoles() 
+    console.log("PRO",ProcessSize)
+    console.log("PRO",start)
+     // [null,{code:10,data:30,stack:16},"p1"]
+    processes= AfterDelete
+    console.log("processInex",processIndex)
+    console.log("AfterDelete",AfterDelete)
+}
+
+
+orderHoles()
 concateHoles() 
 generateOldProcess()
 allocate()
 
+deleteProcess("p3")
+
 renderProcess()
 renderHoles("hole",holes)
 renderHoles("old",OldProcess)
-
 
 
 /*

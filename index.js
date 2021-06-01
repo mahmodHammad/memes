@@ -10,7 +10,7 @@ let holes = [[40,80],[140,100],[260,40],[320,20],[400,50],[450,70]]
 const processes =[
     [null,{code:10,data:30,stack:16},"p1"],
     [null,{code:12,data:40,stack:18},"p2"],
-    [null,{code:10,data:30,stack:35},"p3"],
+    [null,{code:12,data:30,stack:35},"p3"],
     [null,{code:11,data:10,stack:12},"p4"],
 
 ] //start,size,name
@@ -124,11 +124,12 @@ function concateHoles(){
             // alert(index)
             const end = start+size
             const nextStart = holes[index+1][0]
-            const nextSize = holes[index+1][0]
+            const nextSize = holes[index+1][1]
             if(end>=nextStart ){
-                // holes[index][1]+= nextSize
+                console.log("HEY",index)
+                holes[index][1]+= nextSize
 
-                holes =[ ...holes.slice(0,index) ,  ...holes.slice(index+1)]
+                // holes =[ ...holes.slice(0,index) ,  ...holes.slice(index+1)]
                 console.log("holes",holes)
                 // alert(f[0][0])
                
@@ -139,12 +140,13 @@ function concateHoles(){
         }
     })
 }
-concateHoles()
+concateHoles() 
 generateOldProcess()
 allocate()
+
 renderProcess()
+
 renderHoles("old",OldProcess)
-// renderHoles("process",processes)
 renderHoles("hole",holes)
 
 

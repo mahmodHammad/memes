@@ -6,11 +6,11 @@
 // use the same apprach  for the allocate function
 
 const totalMemorySize=520;
-let holes = [[40,80],[140,100],[260,40],[320,20],[400,50],[450,70]]
+let holes = [[40,80],[140,100],[260,40],[320,20],[400,50],[450,50]]
 const processes =[
+    [null,{code:15,data:30,stack:35},"p3"],
     [null,{code:10,data:30,stack:16},"p1"],
     [null,{code:12,data:40,stack:18},"p2"],
-    [null,{code:12,data:30,stack:35},"p3"],
     [null,{code:11,data:10,stack:12},"p4"],
 
 ] //start,size,name
@@ -106,11 +106,17 @@ function renderProcess(){
     processes.forEach(p=>{
         const segments = p[1]
         // alert(p[0])
+
         let accumalatedStartingIndex = p[0]
-        Object.keys(p[1]).forEach(s=>{
-            renderHoles("process",[[accumalatedStartingIndex,p[1][s],`${p[2]}:${s}`]])
-            accumalatedStartingIndex+=p[1][s]
-        })
+        if(accumalatedStartingIndex!==null){
+
+            Object.keys(p[1]).forEach(s=>{
+                renderHoles("process",[[accumalatedStartingIndex,p[1][s],`${p[2]}:${s}`]])
+                accumalatedStartingIndex+=p[1][s]
+            })
+        }else{
+            // PROCESS CAN NOT BE ALLOCATED (NO ENGOUGH SPACE!)
+        }
 
         // alert(totalProcessSize(segments))
         // alert(p[0])

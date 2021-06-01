@@ -22,8 +22,9 @@ h1{
     position: absolute;
 }
 .hole{
-    background-color: #ada;
-    border: 0.7px solid #0f0;
+    background-color: darkolivegreen;
+    /* border: 0.7px solid #0f0; */
+    color: whitesmoke;
 
     margin-top: 1px;
     /* height: 100px; */
@@ -35,15 +36,18 @@ h1{
     position: absolute;
 }
 .oldProcess{
-    background-color: #daa;
-    border: 0.7px solid #f00;
+    background-color: darkred;
+    color: whitesmoke;
+    /* border: 0.7px solid darkred; */
     display: flex;
     width: 100%;
     position: absolute;
 }
 .process{
-    background-color: #aad;
-    border: 0.7px solid #00f;
+    background-color: darkblue;
+    color: whitesmoke;
+    border-bottom: 0.7px solid #00f;
+    margin: 1px;
     display: flex;
     width: 100%;
     position: absolute;

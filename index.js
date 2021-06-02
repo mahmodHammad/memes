@@ -149,14 +149,9 @@ function deleteProcess(processName){
     holes.push([start,ProcessSize])
     orderHoles()
     concateHoles()
-    console.log("HOLES",holes)
-    // concateHoles() 
-    console.log("PRO",ProcessSize)
-    console.log("PRO",start)
      // [null,{code:10,data:30,stack:16},"p1"]
     processes= AfterDelete
-    console.log("processInex",processIndex)
-    console.log("AfterDelete",AfterDelete)
+    render()
 }
 
 
@@ -165,11 +160,20 @@ concateHoles()
 generateOldProcess()
 allocate()
 
-deleteProcess("p3")
 
-renderProcess()
-renderHoles("hole",holes)
-renderHoles("old",OldProcess)
+function clear(){
+    while (memory.firstChild) {
+        memory.removeChild(memory.lastChild);
+    }
+}
+function render(){
+    clear()
+    renderHoles("hole",holes)
+    renderHoles("old",OldProcess)
+    renderProcess()   
+}
+render()
+deleteProcess("p1")
 
 
 /*

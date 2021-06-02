@@ -18,14 +18,13 @@ h1{
     flex-direction: column;
     width: 200px;
     align-self:flex-end;
-    text-align: center;
     height: 1150px;
     /* top: 5%; */
     position: absolute;
 
 }
 .hole{
-    background-color: darkolivegreen;
+    background-color: darkgoldenrod;
     /* border: 0.7px solid #0f0; */
     color: whitesmoke;
 
@@ -58,8 +57,6 @@ h1{
     display: flex;
     width: 100%;
     position: absolute;
-
-
 }
 
 .holeEndIndex{
@@ -70,24 +67,3 @@ h1{
     left: -26px;
 }
 
-.h0{
-    top: 600px;
-    background-color: chartreuse;
-
-}
-
-.h1{
-top: 20px;
-background-color: darkgoldenrod;
-}
-.h1::after{
-    content: "1000";
-}
-.h1::before{
-    content: "1000";
-}
-
-
-.h2{
-background-color: darksalmon;
-}

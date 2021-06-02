@@ -6,7 +6,7 @@
 // use the same apprach  for the allocate function
 
 const totalMemorySize=540;
-let holes = [[140,100],[40,80],[260,40],[320,20],[400,80],[450,60],[510,20]]
+let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
 
 function orderHoles(){
    holes = holes.sort((a,b)=>a[0]-b[0])
@@ -19,15 +19,17 @@ let processes =[
     [null,{code:12,data:10,stack:12},"p4"],
 
 ] //start,size,name
-const OldProcess=[]
+let OldProcess=[]
+
 const memory = document.querySelector(".memory")
 const scale = 2
 memory.style.height= `${totalMemorySize * scale}px`
 
 function generateOldProcess(){
     const firstHoleStart = holes[0][0]
+
     if(firstHoleStart >0)
-        OldProcess.push([0,firstHoleStart])
+        OldProcess.push([0,firstHoleStart,`old ${0}`])
     
 
     for(let h = 0; h<holes.length; h++){
@@ -38,10 +40,10 @@ function generateOldProcess(){
       if(h === holes.length-1){
           const lastHole = totalMemorySize - HoleEnd
           if(HoleEnd<totalMemorySize)
-            OldProcess.push([HoleEnd,lastHole])
+            OldProcess.push([HoleEnd,lastHole,`old ${h}`])
       }else{
           const nextStart = holes[h+1][0]
-          OldProcess.push([HoleEnd,nextStart - HoleEnd])
+          OldProcess.push([HoleEnd,nextStart - HoleEnd,`old ${h}`])
       }
     }
     console.log("OldProcess",OldProcess)
@@ -56,10 +58,10 @@ function renderHoles(type,holes){
         // alert(hole)
         const holeBox = document.createElement("div")
         if(type ==="old"){
-            holeBox.innerText="This is Old Process #"+hole
+            holeBox.innerText=holes[hole][2]
             holeBox.classList.add("oldProcess")
         }else if(type ==="hole"){
-            holeBox.innerText="This is Hole #"+hole
+            holeBox.innerText="Hole #"+hole
             holeBox.classList.add("hole")
         }else if(type ==="process"){
             holeBox.innerText= holes[hole][2]
@@ -140,17 +142,33 @@ function concateHoles(){
     })
 }
 
-function deleteProcess(processName){
+function deleteProcess(processName,isOld){
     // create a hole
-    const processIndex = processes.findIndex(p=>p[2]===processName)
-    const AfterDelete = [...processes.slice(0,processIndex),...processes.slice(processIndex+1)]
-    const [start,segments,name] =processes[processIndex]
-    const ProcessSize = totalProcessSize(segments)
+    let start,ProcessSize,AfterDelete,segments;
+    if(isOld){
+        const processIndex = OldProcess.findIndex(p=>p[2]===processName)
+        AfterDelete = [...OldProcess.slice(0,processIndex),...OldProcess.slice(processIndex+1)]
+        // [start,segments,name] =processes[processIndex]
+        start = OldProcess[processIndex][0]
+        ProcessSize = OldProcess[processIndex][1]
+
+       OldProcess= AfterDelete
+
+    }else{
+        const processIndex = processes.findIndex(p=>p[2]===processName)
+         AfterDelete = [...processes.slice(0,processIndex),...processes.slice(processIndex+1)]
+         const [starter,segments] =processes[processIndex]
+         console.log("FHU",segments)
+         start= starter
+         ProcessSize = totalProcessSize(segments)
+       processes= AfterDelete
+
+    }
+
     holes.push([start,ProcessSize])
     orderHoles()
     concateHoles()
      // [null,{code:10,data:30,stack:16},"p1"]
-    processes= AfterDelete
     render()
 }
 
@@ -158,6 +176,8 @@ function deleteProcess(processName){
 orderHoles()
 concateHoles() 
 generateOldProcess()
+deleteProcess("old 0",true)
+deleteProcess("old 2",true)
 allocate()
 
 
@@ -173,7 +193,8 @@ function render(){
     renderProcess()   
 }
 render()
-deleteProcess("p1")
+deleteProcess("p2",false)
+
 
 
 /*

@@ -4,16 +4,31 @@
 // loop over it's segments
 // divide the render of the process into segments
 // use the same apprach  for the allocate function
+// file:///Users/admin/Downloads/MemoryAllocationProjectDescription2021%20(1).pdf
+const memory = document.querySelector(".memory")
+const scale = 2
 
-const totalMemorySize=540;
+let totalMemorySize=540;
+const submitbtn = document.getElementById("submit")
+const memSize = document.getElementById("memSize")
+submitbtn.onclick=()=>{
+    let val = memSize.value
+    let intval = parseInt(val)
+    memSize.value =intval
+    totalMemorySize=intval
+    renderMemory()
+}
 let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
 
 function orderHoles(){
    holes = holes.sort((a,b)=>a[0]-b[0])
 }
-
+function renderMemory (){
+    memory.style.height= `${totalMemorySize * scale}px`
+}
+renderMemory()
 let processes =[
-    [null,{code:10,data:30,stack:16},"p1"],
+    // [null,{code:10,data:30,stack:16},"p1"],
     [null,{code:15,data:30,stack:35},"p3"],
     [null,{code:10,data:40,stack:18},"p2"],
     [null,{code:12,data:10,stack:12},"p4"],
@@ -21,9 +36,6 @@ let processes =[
 ] //start,size,name
 let OldProcess=[]
 
-const memory = document.querySelector(".memory")
-const scale = 2
-memory.style.height= `${totalMemorySize * scale}px`
 
 function generateOldProcess(){
     const firstHoleStart = holes[0][0]
@@ -46,7 +58,6 @@ function generateOldProcess(){
           OldProcess.push([HoleEnd,nextStart - HoleEnd,`old ${h}`])
       }
     }
-    console.log("OldProcess",OldProcess)
 } 
 // alert(holes[0][0])
 function renderHoles(type,holes){
@@ -176,8 +187,8 @@ function deleteProcess(processName,isOld){
 orderHoles()
 concateHoles() 
 generateOldProcess()
-deleteProcess("old 0",true)
-deleteProcess("old 2",true)
+// deleteProcess("old 0",true)
+// deleteProcess("old 2",true)
 allocate()
 
 
@@ -186,6 +197,7 @@ function clear(){
         memory.removeChild(memory.lastChild);
     }
 }
+
 function render(){
     clear()
     renderHoles("hole",holes)
@@ -193,7 +205,7 @@ function render(){
     renderProcess()   
 }
 render()
-deleteProcess("p2",false)
+// deleteProcess("p2",false)
 
 
 

@@ -9,15 +9,15 @@ const memory = document.querySelector(".memory")
 const scale = 2
 
 let totalMemorySize=540;
-const submitbtn = document.getElementById("submit")
-const memSize = document.getElementById("memSize")
-submitbtn.onclick=()=>{
-    let val = memSize.value
-    let intval = parseInt(val)
-    memSize.value =intval
-    totalMemorySize=intval
-    renderMemory()
-}
+// const submitbtn = document.getElementById("submit")
+// const memSize = document.getElementById("memSize")
+// submitbtn.onclick=()=>{
+//     let val = memSize.value
+//     let intval = parseInt(val)
+//     memSize.value =intval
+//     totalMemorySize=intval
+//     renderMemory()
+// }
 let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
 
 function orderHoles(){
@@ -28,7 +28,7 @@ function renderMemory (){
 }
 renderMemory()
 let processes =[
-    // [null,{code:10,data:30,stack:16},"p1"],
+    [null,{code:[10],data:[30],stack:[16]},"p1"],
     [null,{code:[15],data:[30],stack:[25]},"p3"],
     [null,{code:[10],data:[40],stack:[18]},"p2"],
     [null,{code:[12],data:[10],stack:[12]},"p4"],
@@ -82,11 +82,14 @@ function renderHoles(type,holes){
         holeBox.style.top = `${startingIndex *scale}px`
         holeBox.style.height = `${size *scale}px`
         const endSize =  document.createElement("span")
+        const endSizeContainer =  document.createElement("div")
+        endSizeContainer.classList.add("endSizeContainer")
+        endSizeContainer.appendChild(endSize)
         endSize.innerText =startingIndex + size 
 
         endSize.classList.add("holeEndIndex")
         if(startingIndex!==null){
-            holeBox.appendChild(endSize)
+            holeBox.appendChild(endSizeContainer)
             memory.appendChild(holeBox)
         }else{
             // ERROR THE PROCESS CAN'T BE ALLOCATED
@@ -120,16 +123,16 @@ function firstFit(p,totalProcessSize){
         ([name, value]) =>{
             tempHoles.every((hole,index)=>{
                 const [holeStart,holeSize] = hole
-                const [size,segmentStartingIndex]=value
+                let  [size,segmentStartingIndex]=value
+
+
                 if(size<= holeSize){
-                    console.log("SIZE",size)
-                    console.log("holesize",holeSize)
+                    value[1] =  tempHoles[index][0]
                     const segEnd = size+holeStart
-                    console.log("segEnd",segEnd)
-                    console.log("sizzzz", tempHoles[index][1] - size)
                     tempHoles[index][0] = segEnd
                     tempHoles[index][1]= tempHoles[index][1] - size
-                    console.log("TEMP",tempHoles)
+                    return false
+                }else{
                     return true
                 }
             })
@@ -145,21 +148,22 @@ function firstFit(p,totalProcessSize){
         //     //update the hole
         // }
     
-
+console.log("PROCESS",processes)
 }
 
 function renderProcess(){
     processes.forEach(p=>{
-        let accumalatedStartingIndex = p[0]
-        if(accumalatedStartingIndex!==null){
+        // if(accumalatedStartingIndex!==undefined){
 
+        // loop over segments:
             Object.keys(p[1]).forEach(s=>{
-                renderHoles("process",[[accumalatedStartingIndex,p[1][s],`${p[2]}:${s}`]])
-                accumalatedStartingIndex+=p[1][s]
+                console.log("SEGMEMT",[p[1][s][1],[p[1][s]][0]])
+                renderHoles("process",[[p[1][s][1],p[1][s][0],`${p[2]}:${s}`]])
+                // accumalatedStartingIndex+=p[1][s]
             })
-        }else{
+        // }else{
             // PROCESS CAN NOT BE ALLOCATED (NO ENGOUGH SPACE!)
-        }
+        // }
     })
 }
 
@@ -223,7 +227,7 @@ function render(){
     clear()
     renderHoles("hole",holes)
     renderHoles("old",OldProcess)
-    // renderProcess()   
+    renderProcess()   
 }
 render()
 // deleteProcess("p2",false)

@@ -11,9 +11,9 @@ h1{
     color: blueviolet;
 }
 .memory{
-    background-color: #eee;
+    background-color: #111;
     /* padding: 20px; */
-    border-radius: 5px;
+    /* border-radius: 5px; */
     display: flex;
     flex-direction: column;
     width: 200px;
@@ -21,49 +21,65 @@ h1{
     height: 1150px;
     /* top: 5%; */
     position: absolute;
+    padding-left: 20px;
 
 }
 .hole{
-    background-color: darkgoldenrod;
+    background-color: #ff6c00;
     /* border: 0.7px solid #0f0; */
-    color: whitesmoke;
+    color: #fff;
 
     margin-top: 1px;
     /* height: 100px; */
     display: flex;
     /* align-self: center; */
     width: 100%;
-    font-size: 12px;
 
     /* align-items: center; */
     /* justify-content: center; */
     position: absolute;
 }
 .oldProcess{
-    background-color: darkred;
+    background-color: #a0204c;
     color: whitesmoke;
     /* border: 0.7px solid darkred; */
     display: flex;
-    font-size: 12px;
 
     width: 100%;
     position: absolute;
 }
 .process{
-    background-color: darkblue;
-    font-size: 12px;
+    background-color: #23103a;
     color: whitesmoke;
-    border: 0.7px solid #00f;
+    /* border-bottom: 0.7px solid #eae7af; */
+    border-top: 0.7px solid lightgreen;
     display: flex;
     width: 100%;
     position: absolute;
 }
 
-.holeEndIndex{
-    color: #ccc;
-    font-size: 12px;
-    position: absolute;
-    top: calc(100% - 10px);
-    left: -26px;
+.hole,.oldProcess,.process{
+    font-size: 0.6rem;
+    text-transform: capitalize;
+    padding-left: 2px;
 }
 
+
+
+.endSizeContainer{
+    /* background-color: red !important; */
+    width: 20px;
+    z-index: 1000;
+    color: lightgreen !important;
+    color: #ccc;
+    font-size: 0.5rem;
+
+    position: absolute;
+    top: calc(100% - 5.4px);
+    text-align: right;
+    display: block;
+    left: -20px;
+}
+.holeEndIndex::after{
+content: "-";
+}

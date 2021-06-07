@@ -18,7 +18,8 @@ let totalMemorySize=540;
 //     totalMemorySize=intval
 //     renderMemory()
 // }
-let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
+// let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
+let holes = [[140,100],[40,80],[260,50] ]
 
 function orderHoles(){
    holes = holes.sort((a,b)=>a[0]-b[0])
@@ -115,17 +116,16 @@ function firstFit(p,totalProcessSize){
     // that array 
     // const size =totalProcessSize
     const [IsAllocated,segments,processName]=p
-
-    let tempHoles =[...holes]
-    console.log("tempHoles",tempHoles)
-
+    let isAllProcessAllocated = true
+    let tempHoles =JSON.parse(JSON.stringify(holes));
+    // tempHoles  = []
+    // holes=tempHoles
     Object.entries(segments).forEach(
         ([name, value]) =>{
+            // isAllProcessAllocated = true
             tempHoles.every((hole,index)=>{
                 const [holeStart,holeSize] = hole
                 let  [size,segmentStartingIndex]=value
-
-
                 if(size<= holeSize){
                     value[1] =  tempHoles[index][0]
                     const segEnd = size+holeStart
@@ -133,22 +133,22 @@ function firstFit(p,totalProcessSize){
                     tempHoles[index][1]= tempHoles[index][1] - size
                     return false
                 }else{
+                    if(index===tempHoles.length-1){
+                        //😞 مش لاقي مكان 
+                         isAllProcessAllocated = false    
+                        console.log("CATCH",p)
+                        p[0]=true
+                    }
                     return true
                 }
             })
+
         }
     );
-
-        // if(size<holeSize){
-        //     p[0] = holeStart
-        //     const processEnd = holeStart+size
-        //     holes[h][0] = processEnd
-        //     holes[h][1]= holes[h][1] - size
-        //     return
-        //     //update the hole
-        // }
-    
-console.log("PROCESS",processes)
+    if( isAllProcessAllocated){
+        console.log("FFF",p)
+        holes = tempHoles
+    }
 }
 
 function renderProcess(){
@@ -156,11 +156,14 @@ function renderProcess(){
         // if(accumalatedStartingIndex!==undefined){
 
         // loop over segments:
+        if(!p[0]){
+
             Object.keys(p[1]).forEach(s=>{
                 console.log("SEGMEMT",[p[1][s][1],[p[1][s]][0]])
                 renderHoles("process",[[p[1][s][1],p[1][s][0],`${p[2]}:${s}`]])
                 // accumalatedStartingIndex+=p[1][s]
             })
+        }
         // }else{
             // PROCESS CAN NOT BE ALLOCATED (NO ENGOUGH SPACE!)
         // }
@@ -236,9 +239,9 @@ function render(){
     renderProcess()   
 }
 render()
-deleteProcess("p2",false)
-deleteProcess("p1",false)
-deleteProcess("p4",false)
+// deleteProcess("p2",false)
+// deleteProcess("p1",false)
+// deleteProcess("p4",false)
 
 
 

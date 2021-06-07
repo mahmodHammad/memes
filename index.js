@@ -29,9 +29,9 @@ function renderMemory (){
 renderMemory()
 let processes =[
     // [null,{code:10,data:30,stack:16},"p1"],
-    [null,{code:15,data:30,stack:35},"p3"],
-    [null,{code:10,data:40,stack:18},"p2"],
-    [null,{code:12,data:10,stack:12},"p4"],
+    [null,{code:[15],data:[30],stack:[25]},"p3"],
+    [null,{code:[10],data:[40],stack:[18]},"p2"],
+    [null,{code:[12],data:[10],stack:[12]},"p4"],
 
 ] //start,size,name
 let OldProcess=[]
@@ -101,25 +101,50 @@ const totalProcessSize = (process)=> Object.values(process).reduce((prev,acc)=>p
 function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
         // DON'T TOUCH MY SHIT 😡😡😡 
-        firstFit(processes[p],totalProcessSize(processes[p][1]))
+        firstFit(processes[p])
 
     }
 }
 
 function firstFit(p,totalProcessSize){
-    const size =totalProcessSize
-    for(let h =0 ; h<holes.length; h++){
-        const holeStart = holes[h][0]
-        const holeSize = holes[h][1]
-        if(size<holeSize){
-            p[0] = holeStart
-            const processEnd = holeStart+size
-            holes[h][0] = processEnd
-            holes[h][1]= holes[h][1] - size
-            return
-            //update the hole
+    // forEach segment loop over the holes
+    // create a temp allocation array
+    // that array 
+    // const size =totalProcessSize
+    const [IsAllocated,segments,processName]=p
+
+    let tempHoles =[...holes]
+    console.log("tempHoles",tempHoles)
+
+    Object.entries(segments).forEach(
+        ([name, value]) =>{
+            tempHoles.every((hole,index)=>{
+                const [holeStart,holeSize] = hole
+                const [size,segmentStartingIndex]=value
+                if(size<= holeSize){
+                    console.log("SIZE",size)
+                    console.log("holesize",holeSize)
+                    const segEnd = size+holeStart
+                    console.log("segEnd",segEnd)
+                    console.log("sizzzz", tempHoles[index][1] - size)
+                    tempHoles[index][0] = segEnd
+                    tempHoles[index][1]= tempHoles[index][1] - size
+                    console.log("TEMP",tempHoles)
+                    return true
+                }
+            })
         }
-    }
+    );
+
+        // if(size<holeSize){
+        //     p[0] = holeStart
+        //     const processEnd = holeStart+size
+        //     holes[h][0] = processEnd
+        //     holes[h][1]= holes[h][1] - size
+        //     return
+        //     //update the hole
+        // }
+    
 
 }
 
@@ -169,7 +194,6 @@ function deleteProcess(processName,isOld){
         const processIndex = processes.findIndex(p=>p[2]===processName)
          AfterDelete = [...processes.slice(0,processIndex),...processes.slice(processIndex+1)]
          const [starter,segments] =processes[processIndex]
-         console.log("FHU",segments)
          start= starter
          ProcessSize = totalProcessSize(segments)
        processes= AfterDelete
@@ -182,15 +206,12 @@ function deleteProcess(processName,isOld){
      // [null,{code:10,data:30,stack:16},"p1"]
     render()
 }
-
-
 orderHoles()
 concateHoles() 
 generateOldProcess()
 // deleteProcess("old 0",true)
 // deleteProcess("old 2",true)
 allocate()
-
 
 function clear(){
     while (memory.firstChild) {
@@ -202,7 +223,7 @@ function render(){
     clear()
     renderHoles("hole",holes)
     renderHoles("old",OldProcess)
-    renderProcess()   
+    // renderProcess()   
 }
 render()
 // deleteProcess("p2",false)

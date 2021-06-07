@@ -27,7 +27,6 @@ h1{
 .hole{
     background-color: #ff6c00;
     /* border: 0.7px solid #0f0; */
-    color: #fff;
 
     margin-top: 1px;
     /* height: 100px; */
@@ -41,7 +40,6 @@ h1{
 }
 .oldProcess{
     background-color: #a0204c;
-    color: whitesmoke;
     /* border: 0.7px solid darkred; */
     display: flex;
 
@@ -50,7 +48,6 @@ h1{
 }
 .process{
     background-color: #23103a;
-    color: whitesmoke;
     /* border-bottom: 0.7px solid #eae7af; */
     border-top: 0.7px solid lightgreen;
     display: flex;
@@ -62,6 +59,7 @@ h1{
     font-size: 0.6rem;
     text-transform: capitalize;
     padding-left: 2px;
+    color: #fff;
 }
 
 

@@ -186,6 +186,7 @@ function deleteProcess(processName,isOld){
     // create a hole
     let start,ProcessSize,AfterDelete,segments;
     if(isOld){
+        // deleteProcess()
         const processIndex = OldProcess.findIndex(p=>p[2]===processName)
         AfterDelete = [...OldProcess.slice(0,processIndex),...OldProcess.slice(processIndex+1)]
         // [start,segments,name] =processes[processIndex]
@@ -193,18 +194,23 @@ function deleteProcess(processName,isOld){
         ProcessSize = OldProcess[processIndex][1]
 
        OldProcess= AfterDelete
+    holes.push([start,ProcessSize])
+
 
     }else{
         const processIndex = processes.findIndex(p=>p[2]===processName)
+        console.log("INDDDEX",processIndex)
          AfterDelete = [...processes.slice(0,processIndex),...processes.slice(processIndex+1)]
+        //  recover Holes
          const [starter,segments] =processes[processIndex]
-         start= starter
-         ProcessSize = totalProcessSize(segments)
+         Object.values(segments).forEach(([size,starting])=>{
+             console.log(size,starting)
+               holes.push([starting,size])
+         })
        processes= AfterDelete
 
     }
 
-    holes.push([start,ProcessSize])
     orderHoles()
     concateHoles()
      // [null,{code:10,data:30,stack:16},"p1"]
@@ -230,7 +236,9 @@ function render(){
     renderProcess()   
 }
 render()
-// deleteProcess("p2",false)
+deleteProcess("p2",false)
+deleteProcess("p1",false)
+deleteProcess("p4",false)
 
 
 

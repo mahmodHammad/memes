@@ -19,7 +19,7 @@ let totalMemorySize=540;
 //     renderMemory()
 // }
 // let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
-let holes = [[140,100],[40,80],[260,50] ]
+let holes = [[140,100],[40,80],[260,90] ]
 
 function orderHoles(){
    holes = holes.sort((a,b)=>a[0]-b[0])
@@ -106,16 +106,47 @@ function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
         // DON'T TOUCH MY SHIT 😡😡😡 
         firstFit(processes[p])
+        // bestFit(processes[p])
 
     }
 }
+// function bestFit(p){
+//     // Allocate in the smallest hole
+//     const segments=p[1]
+//     let tempHoles =JSON.parse(JSON.stringify(holes));
+//     Object.entries(segments).forEach(
+//         ([name, value]) =>{
+//             tempHoles.every((hole,index)=>{
+//                 const [holeStart,holeSize] = hole
+//                 let  [size,segmentStartingIndex]=value
+//                 if(size<= holeSize){
+//                     value[1] =  tempHoles[index][0]
+//                     const segEnd = size+holeStart
+//                     tempHoles[index][0] = segEnd
+//                     tempHoles[index][1]= tempHoles[index][1] - size
+//                     return false
+//                 }else{
+//                     if(index===tempHoles.length-1){
+//                         //😞 مش لاقي مكان 
+//                          isAllProcessAllocated = false    
+//                         console.log("CATCH",p)
+//                         p[0]=true
+//                     }
+//                     return true
+//                 }
+//             })
+//         }
+//     );
+//     if( isAllProcessAllocated)
+//         holes = tempHoles
+// }
 
-function firstFit(p,totalProcessSize){
+function firstFit(p){
     // forEach segment loop over the holes
     // create a temp allocation array
     // that array 
     // const size =totalProcessSize
-    const [IsAllocated,segments,processName]=p
+    const segments=p[1]
     let isAllProcessAllocated = true
     let tempHoles =JSON.parse(JSON.stringify(holes));
     // tempHoles  = []

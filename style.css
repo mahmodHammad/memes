@@ -49,7 +49,7 @@ h1{
 .process{
     background-color: #23103a;
     /* border-bottom: 0.7px solid #eae7af; */
-    border-top: 0.7px solid lightgreen;
+    /* border-top: 0.7px solid lightgreen; */
     display: flex;
     width: 100%;
     position: absolute;
@@ -60,6 +60,8 @@ h1{
     text-transform: capitalize;
     padding-left: 2px;
     color: #fff;
+    border-top: 0.2px solid lightgreen;
+
 }
 
 

@@ -19,7 +19,7 @@ let totalMemorySize=540;
 //     renderMemory()
 // }
 // let holes = [[140,100],[40,80],[260,50],[340,30],[400,80],[450,60],[510,20]]
-let holes = [[140,20],[250,30],[0,90] ,[300,70],[400,140]]
+let holes = [[140,20],[250,60],[0,90] ,[300,70],[400,140]]
 
 function orderHoles(){
    holes = holes.sort((a,b)=>a[0]-b[0])
@@ -29,10 +29,10 @@ function renderMemory (){
 }
 renderMemory()
 let processes =[
-    [null,{code:[10],data:[80],stack:[60]},"p1"],
+    [null,{code:[10],data:[20],stack:[10]},"p1"],
     [null,{code:[65],data:[30],stack:[25]},"p3"],
     [null,{code:[10],data:[40],stack:[18]},"p2"],
-    // [null,{code:[12],data:[60],stack:[12]},"p4"],
+    [null,{code:[12],data:[30],stack:[12]},"p4"],
 
 ] //start,size,name
 let OldProcess=[]
@@ -105,9 +105,9 @@ const totalProcessSize = (process)=> Object.values(process).reduce((prev,acc)=>p
 function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
         // DON'T TOUCH MY SHIT 😡😡😡 
-        // firstFit(processes[p])
-        bestFit(processes[p])
-
+        firstFit(processes[p])
+        // bestFit(processes[p])
+        // worseFit(processes[p])
     }
     console.log("PROCCESES",processes)
 }
@@ -122,8 +122,6 @@ function getSmallestHole(tempHoles,segmentSize){
             smallestHole[2]= index
         }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
             // couldn't find hole
-            console.log("FUCK",smallestHole[2])
-            console.log("FUCK",smallestHole[2])
             smallestHole[2]= -1
         }
 
@@ -131,6 +129,61 @@ function getSmallestHole(tempHoles,segmentSize){
     return smallestHole
 }
 
+function getLargesttHole(tempHoles,segmentSize){
+    let smallestHole = [0,0] 
+    tempHoles.forEach((hole,index)=>{
+        const [holeStart,holeSize] = hole
+
+        if(holeSize>segmentSize && smallestHole[1]<holeSize){
+            smallestHole=hole
+            smallestHole[2]= index
+        }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
+            // couldn't find hole
+            smallestHole[2]= -1
+        }
+
+    })
+    return smallestHole
+}
+
+
+function worseFit(p){
+      // Allocate in the smallest hole
+      const segments=p[1]
+      let isAllProcessAllocated = true
+      let tempHoles =JSON.parse(JSON.stringify(holes));
+      Object.entries(segments).forEach(
+          // for each segment
+          ([name, value]) =>{
+              const segmentSize = value[0]
+             let smallest =  getLargesttHole(tempHoles,segmentSize)
+             const [ holeStart,holeEnd,holeIndex] = smallest
+             if(holeIndex==-1){
+                 console.log("PROCESS CAN NOt BE ALLOCATED",p)
+                 isAllProcessAllocated = false    
+                 p[0]=true
+  
+             }
+  
+             value[1] =  smallest[0]
+             const segEnd = segmentSize+holeStart
+  
+             if(holeIndex!==-1){
+                 tempHoles[holeIndex][0] = segEnd
+                  const oldHoleSize = tempHoles[holeIndex][1]
+                  tempHoles[holeIndex][1]=oldHoleSize - segmentSize
+             }else{
+                 console.log("BUBUBUB",holeIndex)
+             }
+            
+          //    console.log("value",value)
+          //    console.log("smallestHole",smallest)
+             console.log("_________________")
+          }
+      );
+      if( isAllProcessAllocated)
+          holes = tempHoles
+}
 function bestFit(p){
     // Allocate in the smallest hole
     const segments=p[1]

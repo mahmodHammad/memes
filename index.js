@@ -29,7 +29,7 @@ function renderMemory (){
 }
 renderMemory()
 let processes =[
-    [null,{code:[10],data:[30],stack:[16]},"p1"],
+    [null,{code:[10],data:[80],stack:[60]},"p1"],
     [null,{code:[65],data:[30],stack:[25]},"p3"],
     [null,{code:[10],data:[40],stack:[18]},"p2"],
     // [null,{code:[12],data:[60],stack:[12]},"p4"],
@@ -120,9 +120,11 @@ function getSmallestHole(tempHoles,segmentSize){
         if(holeSize>segmentSize && smallestHole[1]>holeSize){
             smallestHole=hole
             smallestHole[2]= index
-        }else if(!smallestHole[2] &&index ===tempHoles.length-1){
+        }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
             // couldn't find hole
-            // smallestHole[2]= -1
+            console.log("FUCK",smallestHole[2])
+            console.log("FUCK",smallestHole[2])
+            smallestHole[2]= -1
         }
 
     })
@@ -139,12 +141,17 @@ function bestFit(p){
         ([name, value]) =>{
             const segmentSize = value[0]
            let smallest =  getSmallestHole(tempHoles,segmentSize)
-           value[1] =  smallest[0]
            const [ holeStart,holeEnd,holeIndex] = smallest
+           if(holeIndex==-1){
+               console.log("PROCESS CAN NOt BE ALLOCATED",p)
+               isAllProcessAllocated = false    
+               p[0]=true
+
+           }
+
+           value[1] =  smallest[0]
            const segEnd = segmentSize+holeStart
-           console.log("CCCCFFFF",tempHoles)
-           console.log("hhhhhhhh",holes)
-            console.log("HOLEINDEX",holeIndex)
+
            if(holeIndex!==-1){
                tempHoles[holeIndex][0] = segEnd
                 const oldHoleSize = tempHoles[holeIndex][1]
@@ -162,22 +169,6 @@ function bestFit(p){
         holes = tempHoles
 }
 
-  // if(size<= holeSize){
-                //     value[1] =  tempHoles[index][0]
-                //     const segEnd = size+holeStart
-                //     tempHoles[index][0] = segEnd
-                //     tempHoles[index][1]= tempHoles[index][1] - size
-                //     return false
-                // }else{
-                //     if(index===tempHoles.length-1){
-                //         //😞 مش لاقي مكان 
-                //          isAllProcessAllocated = false    
-                //         console.log("CATCH",p)
-                //         p[0]=true
-                //     }
-                //     return true
-                // }
-
 function firstFit(p){
     // forEach segment loop over the holes
     // create a temp allocation array
@@ -186,11 +177,9 @@ function firstFit(p){
     const segments=p[1]
     let isAllProcessAllocated = true
     let tempHoles =JSON.parse(JSON.stringify(holes));
-    // tempHoles  = []
-    // holes=tempHoles
+
     Object.entries(segments).forEach(
         ([name, value]) =>{
-            // isAllProcessAllocated = true
             tempHoles.every((hole,index)=>{
                 const [holeStart,holeSize] = hole
                 let  [size,segmentStartingIndex]=value
@@ -198,7 +187,7 @@ function firstFit(p){
                     value[1] =  tempHoles[index][0]
                     const segEnd = size+holeStart
                     tempHoles[index][0] = segEnd
-                    tempHoles[index][1]= tempHoles[index][1] - size
+                    tempHoles[index][1] = tempHoles[index][1] - size
                     return false
                 }else{
                     if(index===tempHoles.length-1){
@@ -214,14 +203,12 @@ function firstFit(p){
         }
     );
     if( isAllProcessAllocated){
-        console.log("FFF",p)
         holes = tempHoles
     }
 }
 
 function renderProcess(){
     processes.forEach(p=>{
-        // if(accumalatedStartingIndex!==undefined){
 
         // loop over segments:
         if(!p[0]){
@@ -229,7 +216,6 @@ function renderProcess(){
             Object.keys(p[1]).forEach(s=>{
                 // console.log("SEGMEMT",[p[1][s][1],[p[1][s]][0]])
                 renderHoles("process",[[p[1][s][1],p[1][s][0],`${p[2]}:${s}`]])
-                // accumalatedStartingIndex+=p[1][s]
             })
         }
         // }else{

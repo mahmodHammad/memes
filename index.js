@@ -30,7 +30,7 @@ function renderMemory (){
 renderMemory()
 let processes =[
     [null,{code:[10],data:[30],stack:[16]},"p1"],
-    [null,{code:[15],data:[30],stack:[25]},"p3"],
+    [null,{code:[65],data:[30],stack:[25]},"p3"],
     [null,{code:[10],data:[40],stack:[18]},"p2"],
     // [null,{code:[12],data:[60],stack:[12]},"p4"],
 
@@ -109,6 +109,7 @@ function allocate(){
         bestFit(processes[p])
 
     }
+    console.log("PROCCESES",processes)
 }
 
 function getSmallestHole(tempHoles,segmentSize){
@@ -119,8 +120,9 @@ function getSmallestHole(tempHoles,segmentSize){
         if(holeSize>segmentSize && smallestHole[1]>holeSize){
             smallestHole=hole
             smallestHole[2]= index
-        }else{
-            smallestHole[2]= -1
+        }else if(!smallestHole[2] &&index ===tempHoles.length-1){
+            // couldn't find hole
+            // smallestHole[2]= -1
         }
 
     })
@@ -142,9 +144,9 @@ function bestFit(p){
            const segEnd = segmentSize+holeStart
            console.log("CCCCFFFF",tempHoles)
            console.log("hhhhhhhh",holes)
-
+            console.log("HOLEINDEX",holeIndex)
            if(holeIndex!==-1){
-                tempHoles[holeIndex][0] = segEnd
+               tempHoles[holeIndex][0] = segEnd
                 const oldHoleSize = tempHoles[holeIndex][1]
                 tempHoles[holeIndex][1]=oldHoleSize - segmentSize
            }else{

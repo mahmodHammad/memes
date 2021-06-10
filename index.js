@@ -106,39 +106,40 @@ function allocate(){
     for(let p = 0  ; p<processes.length ; p++){
         // DON'T TOUCH MY SHIT 😡😡😡 
         // firstFit(processes[p])
-        bestFit(processes[p],true)
-        // worseFit(processes[p])
+        bestFit(processes[p],false)
     }
     console.log("PROCCESES",processes)
 }
 
-function getSmallestHole(tempHoles,segmentSize,isWorse){
-    let smallestHole = [0,1000000] 
+function getSmallestHole(tempHoles,segmentSize,isBest){
+    let smallestHole = isBest?[0,1000000] :[0,0] 
+
     tempHoles.forEach((hole,index)=>{
         const [holeStart,holeSize] = hole
-
-        if(isWorse){
-            if(holeSize>segmentSize && smallestHole[1]<holeSize){
-                smallestHole=hole
-                smallestHole[2]= index
-            }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
-                // couldn't find hole
-                smallestHole[2]= -1
-            }
-        }else{
-            if(holeSize>segmentSize && smallestHole[1]>holeSize){
-                smallestHole=hole
-                smallestHole[2]= index
-            }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
-                // couldn't find hole
-                smallestHole[2]= -1
-            }
-        }
+if(isBest){
+    if(holeSize>segmentSize && smallestHole[1]>holeSize){
+        smallestHole=hole
+        smallestHole[2]= index
+    }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
+        // couldn't find hole
+        smallestHole[2]= -1
+    }
+}else{
+    // worse fit (let largest hole)
+    if(holeSize>segmentSize && smallestHole[1]<holeSize){
+        smallestHole=hole
+        smallestHole[2]= index
+    }else if(smallestHole[2]===undefined &&index ===tempHoles.length-1){
+        // couldn't find hole
+        smallestHole[2]= -1
+    }
+}
+      
     })
     return smallestHole
 }
 
-function bestFit(p,isWorse){
+function bestFit(p,isBest){
     // Allocate in the smallest hole
     const segments=p[1]
     let isAllProcessAllocated = true
@@ -147,7 +148,7 @@ function bestFit(p,isWorse){
         // for each segment
         ([name, value]) =>{
             const segmentSize = value[0]
-           let smallest =  getSmallestHole(tempHoles,segmentSize,isWorse)
+           let smallest =  getSmallestHole(tempHoles,segmentSize,isBest)
            const [ holeStart,holeEnd,holeIndex] = smallest
            if(holeIndex==-1){
                console.log("PROCESS CAN NOt BE ALLOCATED",p)
